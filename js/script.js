@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
-	'use strict';
 
+	'use strict';
+	//Таймер
 	function countTimer(deadline) {
 		const timerHours = document.querySelector('#timer-hours'),
 			timerMinutes = document.querySelector('#timer-minutes'),
@@ -39,5 +40,64 @@ window.addEventListener('DOMContentLoaded', () => {
 		setInterval(updateClock, 1000);
 	}
 
-	countTimer('1 july 2020');
+	countTimer('2 july 2020');
+
+	//Меню
+	const toggleMenu = () => {
+		const btnMenu = document.querySelector('.menu'),
+			menu = document.querySelector('menu'),
+			closeMenu = menu.querySelector('.close-btn'),
+			menuItems = menu.querySelectorAll('ul > li');
+
+		const handlerMenu = () => {
+			menu.classList.toggle('active-menu');
+		};
+
+		btnMenu.addEventListener('click', handlerMenu);
+		closeMenu.addEventListener('click', handlerMenu);
+		menuItems.forEach(item => item.addEventListener('click', handlerMenu));
+	};
+
+	toggleMenu();
+
+	//Модальное окно
+	const togglePopup = () => {
+		const popup = document.querySelector('.popup'),
+			popupClose = document.querySelector('.popup-close'),
+			popupBtn = document.querySelectorAll('.popup-btn');
+
+
+		//Анимация модального окна
+		const popupContent = document.querySelector('.popup-content');
+		popupContent.style.left = '0';
+		let count = 0,
+			popupInterval;
+		const animatePopup = () => {
+			popupInterval = requestAnimationFrame(animatePopup);
+			count++;
+			popupContent.style.left = count + '%';
+			if (count === 38) {
+				cancelAnimationFrame(popupInterval);
+			}
+		};
+
+
+		popupBtn.forEach(item => {
+			item.addEventListener('click', () => {
+				popup.style.display = 'block';
+				if (document.documentElement.clientWidth > 768) {
+					popupInterval = requestAnimationFrame(animatePopup);
+				}
+			});
+		});
+
+		popupClose.addEventListener('click', () => {
+			popup.style.display = '';
+			count = 0;
+		});
+
+	};
+
+	togglePopup();
+
 });
