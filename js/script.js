@@ -94,6 +94,8 @@ window.addEventListener('DOMContentLoaded', () => {
 				popup.style.display = 'block';
 				if (document.documentElement.clientWidth > 768) {
 					popupInterval = requestAnimationFrame(animatePopup);
+				} else {
+					popupContent.removeAttribute('style');
 				}
 			});
 		});
