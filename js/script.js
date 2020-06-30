@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
-
 	'use strict';
+
 	//Таймер
 	function countTimer(deadline) {
 		const timerHours = document.querySelector('#timer-hours'),
@@ -47,15 +47,22 @@ window.addEventListener('DOMContentLoaded', () => {
 		const btnMenu = document.querySelector('.menu'),
 			menu = document.querySelector('menu'),
 			closeMenu = menu.querySelector('.close-btn'),
-			menuItems = menu.querySelectorAll('ul > li');
+			menuItems = menu.querySelectorAll('ul > li'),
+			menuLinks = menu.querySelectorAll('li > a[href^="#"]');
 
 		const handlerMenu = () => {
 			menu.classList.toggle('active-menu');
 		};
-
 		btnMenu.addEventListener('click', handlerMenu);
 		closeMenu.addEventListener('click', handlerMenu);
 		menuItems.forEach(item => item.addEventListener('click', handlerMenu));
+
+		//Плавная прокрутка до пункта меню
+		menuLinks.forEach(item => item.addEventListener('click', event => {
+			event.preventDefault();
+			const linkID = item.getAttribute('href');
+			document.querySelector(linkID).scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}));
 	};
 
 	toggleMenu();
@@ -99,5 +106,18 @@ window.addEventListener('DOMContentLoaded', () => {
 	};
 
 	togglePopup();
+
+	//Скролл на один экран
+	const scrollDown = () => {
+		const btnScrollDown = document.querySelector('a[href="#service-block"]');
+		console.log(btnScrollDown);
+		btnScrollDown.addEventListener('click', event => {
+			event.preventDefault();
+			const linkID = btnScrollDown.getAttribute('href');
+			document.querySelector(linkID).scrollIntoView({ behavior: 'smooth', block: 'start' });
+		});
+	};
+
+	scrollDown();
 
 });
