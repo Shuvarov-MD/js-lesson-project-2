@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
-
 	'use strict';
+
 	//Таймер
 	function countTimer(deadline) {
 		const timerHours = document.querySelector('#timer-hours'),
@@ -40,22 +40,34 @@ window.addEventListener('DOMContentLoaded', () => {
 		setInterval(updateClock, 1000);
 	}
 
-	countTimer('2 july 2020');
+	countTimer('3 july 2020');
 
 	//Меню
 	const toggleMenu = () => {
 		const btnMenu = document.querySelector('.menu'),
-			menu = document.querySelector('menu'),
-			closeMenu = menu.querySelector('.close-btn'),
-			menuItems = menu.querySelectorAll('ul > li');
+			menu = document.querySelector('menu');
 
 		const handlerMenu = () => {
 			menu.classList.toggle('active-menu');
 		};
 
 		btnMenu.addEventListener('click', handlerMenu);
-		closeMenu.addEventListener('click', handlerMenu);
-		menuItems.forEach(item => item.addEventListener('click', handlerMenu));
+		menu.addEventListener('click', event => {
+			let target = event.target;
+
+			if (target.classList.contains('close-btn')) {
+				handlerMenu();
+			} else {
+				target = target.closest('li');
+
+				//Плавная прокрутка до блока
+				event.preventDefault();
+				const menuLink = target.querySelector('a[href^="#"]'),
+					linkID = menuLink.getAttribute('href');
+				document.querySelector(linkID).scrollIntoView({ behavior: 'smooth', block: 'start' });
+				handlerMenu();
+			}
+		});
 	};
 
 	toggleMenu();
@@ -63,7 +75,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	//Модальное окно
 	const togglePopup = () => {
 		const popup = document.querySelector('.popup'),
-			popupClose = document.querySelector('.popup-close'),
 			popupBtn = document.querySelectorAll('.popup-btn');
 
 
@@ -93,13 +104,69 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 		});
 
-		popupClose.addEventListener('click', () => {
-			popup.style.display = '';
-			count = 0;
-		});
+		popup.addEventListener('click', event => {
+			let target = event.target;
 
+			if (target.classList.contains('popup-close')) {
+				popup.style.display = 'none';
+				count = 0;
+			} else {
+				target = target.closest('.popup-content');
+				if (!target) {
+					popup.style.display = 'none';
+					count = 0;
+				}
+			}
+		});
 	};
 
 	togglePopup();
 
+	//Скролл на один экран
+	const scrollDown = () => {
+		const btnScrollDown = document.querySelector('a[href="#service-block"]');
+
+		btnScrollDown.addEventListener('click', event => {
+			event.preventDefault();
+			const linkID = btnScrollDown.getAttribute('href');
+			document.querySelector(linkID).scrollIntoView({ behavior: 'smooth', block: 'start' });
+		});
+	};
+
+	scrollDown();
+
+
+	//Табы
+	const tabs = () => {
+		const tabHeader = document.querySelector('.service-header'),
+			tab = document.querySelectorAll('.service-header-tab'),
+			tabContent = document.querySelectorAll('.service-tab');
+
+		const toggleTabContent = index => {
+			for (let i = 0; i < tabContent.length; i++) {
+				if (index === i) {
+					tab[i].classList.add('active');
+					tabContent[i].classList.remove('d-none');
+				} else {
+					tab[i].classList.remove('active');
+					tabContent[i].classList.add('d-none');
+				}
+			}
+		};
+
+		tabHeader.addEventListener('click', event => {
+			let target = event.target;
+			target = target.closest('.service-header-tab');
+
+			if (target) {
+				tab.forEach((item, index) => {
+					if (item === target) {
+						toggleTabContent(index);
+					}
+				});
+			}
+		});
+	};
+
+	tabs();
 });
