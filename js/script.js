@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		setInterval(updateClock, 1000);
 	}
 
-	countTimer('3 july 2020');
+	countTimer('8 july 2020');
 
 	//Меню
 	const toggleMenu = () => {
@@ -278,4 +278,42 @@ window.addEventListener('DOMContentLoaded', () => {
 	};
 
 	slider();
+
+	//Блок с фотографиями
+	const replacePhoto = () => {
+		const command = document.getElementById('command');
+
+		command.addEventListener('mouseover', event => {
+			if (event.target.matches('.command__photo')) {
+				const src = event.target.src;
+				event.target.src = event.target.dataset.img;
+				event.target.dataset.img = src;
+			}
+		});
+
+		command.addEventListener('mouseout', event => {
+			if (event.target.matches('.command__photo')) {
+				const src = event.target.src;
+				event.target.src = event.target.dataset.img;
+				event.target.dataset.img = src;
+			}
+		});
+	};
+
+	replacePhoto();
+
+
+	//Валидация калькулятора
+	const validateCalc = () => {
+		const calcBlock = document.querySelector('.calc-block');
+
+		calcBlock.addEventListener('input', event => {
+			if (event.target.matches('.calc-square') || event.target.matches('.calc-count') || event.target.matches('.calc-day')) {
+				event.target.value = event.target.value.replace(/\D/g, '');
+			}
+		});
+	};
+
+	validateCalc();
+
 });
