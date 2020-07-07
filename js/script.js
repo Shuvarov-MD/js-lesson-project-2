@@ -1,13 +1,13 @@
 window.addEventListener('DOMContentLoaded', () => {
-	'use strict';
+	'use srtict';
 
 	//Таймер
-	function countTimer(deadline) {
+	const countTimer = deadline => {
 		const timerHours = document.querySelector('#timer-hours'),
 			timerMinutes = document.querySelector('#timer-minutes'),
 			timerSeconds = document.querySelector('#timer-seconds');
 
-		function getTimeRemaining() {
+		const getTimeRemaining = () => {
 			const dataStop = new Date(deadline).getTime(),
 				dateNow = new Date().getTime(),
 				timeRemaining = (dataStop - dateNow) / 1000;
@@ -19,9 +19,9 @@ window.addEventListener('DOMContentLoaded', () => {
 			minutes = minutes < 10 ? '0' + minutes : minutes;
 			hours = hours < 10 ? '0' + hours : hours;
 			return { timeRemaining, seconds, minutes, hours };
-		}
+		};
 
-		function updateClock() {
+		const updateClock = () => {
 			const timer = getTimeRemaining();
 
 			timerHours.textContent = timer.hours;
@@ -35,10 +35,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				timerMinutes.textContent = '00';
 				timerSeconds.textContent = '00';
 			}
-		}
+		};
 
 		setInterval(updateClock, 1000);
-	}
+	};
 
 	countTimer('8 july 2020');
 
@@ -326,6 +326,24 @@ window.addEventListener('DOMContentLoaded', () => {
 			calcCount = document.querySelector('.calc-count'),
 			totalValue = document.getElementById('total');
 
+		//Анимация итоговой суммы
+		const animateTotal = ({ duration, draw, timing }) => {
+			const start = performance.now();
+
+			requestAnimationFrame(function animateTotal(time) {
+				let timeFraction = (time - start) / duration;
+
+				if (timeFraction > 1) timeFraction = 1;
+
+				const progress = timing(timeFraction);
+				draw(progress);
+
+				if (timeFraction < 1) {
+					requestAnimationFrame(animateTotal);
+				}
+			});
+		};
+
 		const countSum = () => {
 			let total = 0,
 				countValue = 1,
@@ -347,7 +365,15 @@ window.addEventListener('DOMContentLoaded', () => {
 				total = price * typeValue * squareValue * countValue * dayValue;
 			}
 
-			totalValue.textContent = total;
+			animateTotal({
+				duration: 1000,
+				timing(timeFraction) {
+					return timeFraction;
+				},
+				draw(progress) {
+					totalValue.textContent = Math.floor(progress * total);
+				}
+			});
 		};
 
 		calcBlock.addEventListener('change', event => {
@@ -356,7 +382,6 @@ window.addEventListener('DOMContentLoaded', () => {
 			if (target.matches('select') || target.matches('input')) {
 				countSum();
 			}
-
 		});
 	};
 
