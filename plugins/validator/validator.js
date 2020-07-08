@@ -90,7 +90,11 @@ class Validator {
       font-size: 12px;
       font-family: sans-serif;
       color: red;
-    }
+		}
+		#form1-phone, #form1-email, #form1-name  {
+			margin-bottom: -3rem;
+		}
+
     `;
 		document.head.appendChild(style);
 	}
