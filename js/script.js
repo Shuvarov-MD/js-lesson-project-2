@@ -391,7 +391,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	//send-ajax-form
 	const sendForm = () => {
 		const errorMessage = 'Что-то пошло не так...',
-			loadMessage = 'Загрузка...',
 			successMessage = 'Спасибо! Мы скоро с вами свяжемся!',
 			forms = document.querySelectorAll('form'),
 			statusMessage = document.createElement('div');
@@ -407,6 +406,34 @@ window.addEventListener('DOMContentLoaded', () => {
 				}
 			});
 		});
+
+
+		const createAnimationStyle = () => {
+			const style = document.createElement('style');
+			style.textContent = `
+			.sk-rotating-plane {
+				width: 2rem;
+				height: 2rem;
+				margin: auto;
+				margin-top: 10px;
+				background-color: #19b5fe;
+				animation: sk-rotating-plane 1.2s infinite ease-in-out;
+			}
+
+			@keyframes sk-rotating-plane {
+				0% {
+					transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+				}
+				50% {
+					transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+				}
+				100% {
+					transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+				}
+			}
+			`;
+			document.head.appendChild(style);
+		};
 
 
 		const postData = (body, outputData, errorData) => {
@@ -434,7 +461,9 @@ window.addEventListener('DOMContentLoaded', () => {
 			item.addEventListener('submit', event => {
 				event.preventDefault();
 				item.appendChild(statusMessage);
-				statusMessage.textContent = loadMessage;
+				createAnimationStyle();
+				statusMessage.textContent = '';
+				statusMessage.classList.add('sk-rotating-plane');
 				const formData = new FormData(item);
 
 				const body = {};
@@ -442,8 +471,10 @@ window.addEventListener('DOMContentLoaded', () => {
 					body[value[0]] = value[1];
 				}
 				postData(body, () => {
+					statusMessage.classList.remove('sk-rotating-plane');
 					statusMessage.textContent = successMessage;
 				}, error => {
+					statusMessage.classList.remove('sk-rotating-plane');
 					statusMessage.textContent = errorMessage;
 					console.error(error);
 				});
