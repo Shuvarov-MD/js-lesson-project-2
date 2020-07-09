@@ -401,7 +401,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		forms.forEach(item => {
 			item.addEventListener('input', event => {
 				if (event.target.matches('.form-phone')) {
-					event.target.value = event.target.value.replace(/[^+\d]/, '');
+					event.target.value = event.target.value.replace(/^[^+\d]*(\+|\d)|\D/g, '$1');
 				} else if (event.target.matches('.mess') || event.target.matches('input[name="user_name"]')) {
 					event.target.value = event.target.value.replace(/[^А-ЯЁа-яё\s]/, '');
 				}
