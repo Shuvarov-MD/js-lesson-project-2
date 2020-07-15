@@ -41,7 +41,7 @@ const sendForm = () => {
       }
     }
 
-    
+
     input:invalid {
       box-shadow: none;
     }
@@ -50,7 +50,7 @@ const sendForm = () => {
 	};
 
 
-	const postData = formData => fetch('./server.php', { method: 'POST', headers: { 'Content-Type': 'multipart/form-data' }, body: formData });
+	const postData = formData => fetch('./server.php', { method: 'POST', headers: { 'Content-Type': 'multipart/form-data' }, body: formData._blob ? formData._blob() : formData });
 
 	forms.forEach(item => {
 		item.addEventListener('submit', event => {
