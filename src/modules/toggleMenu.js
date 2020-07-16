@@ -16,14 +16,15 @@ const toggleMenu = () => {
 			if (target.classList.contains('close-btn')) {
 				handlerMenu();
 			} else {
-				target = target.closest('li');
+				if (target.closest('a[href^="#"]')) {
+					target = target.closest('a[href^="#"]');
 
-				//Плавная прокрутка до блока
-				event.preventDefault();
-				const menuLink = target.querySelector('a[href^="#"]'),
-					linkID = menuLink.getAttribute('href');
-				document.querySelector(linkID).scrollIntoView({ behavior: 'smooth', block: 'start' });
-				handlerMenu();
+					//Плавная прокрутка до блока
+					event.preventDefault();
+					const linkID = target.getAttribute('href');
+					document.querySelector(linkID).scrollIntoView({ behavior: 'smooth', block: 'start' });
+					handlerMenu();
+				}
 			}
 		}
 	});

@@ -55,28 +55,30 @@ const sendForm = () => {
 	forms.forEach(item => {
 		item.addEventListener('submit', event => {
 			event.preventDefault();
-			item.appendChild(statusMessage);
-			createAnimationStyle();
-			statusMessage.textContent = '';
-			statusMessage.classList.add('sk-rotating-plane');
-			const formData = new FormData(item);
+			if (item.querySelector('.form-phone').value.length >= 11) {
+				item.appendChild(statusMessage);
+				createAnimationStyle();
+				statusMessage.textContent = '';
+				statusMessage.classList.add('sk-rotating-plane');
+				const formData = new FormData(item);
 
-			postData(formData).then(response => {
-				if (response.status !== 200) {
-					throw new Error('status network not 200');
-				}
-				statusMessage.classList.remove('sk-rotating-plane');
-				statusMessage.textContent = successMessage;
-			}).catch(error => {
-				statusMessage.classList.remove('sk-rotating-plane');
-				statusMessage.textContent = errorMessage;
-				console.error(error);
-			});
+				postData(formData).then(response => {
+					if (response.status !== 200) {
+						throw new Error('status network not 200');
+					}
+					statusMessage.classList.remove('sk-rotating-plane');
+					statusMessage.textContent = successMessage;
+				}).catch(error => {
+					statusMessage.classList.remove('sk-rotating-plane');
+					statusMessage.textContent = errorMessage;
+					console.error(error);
+				});
 
-			const inputs = item.querySelectorAll('input');
-			inputs.forEach(item => {
-				item.value = '';
-			});
+				const inputs = item.querySelectorAll('input');
+				inputs.forEach(item => {
+					item.value = '';
+				});
+			}
 		});
 	});
 };
