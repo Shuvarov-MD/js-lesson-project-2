@@ -44,7 +44,7 @@ import sendForm from './modules/sendForm';
 
 
 //Таймер
-countTimer('18 july 2020');
+countTimer('20 july 2020');
 
 //Меню
 toggleMenu();
