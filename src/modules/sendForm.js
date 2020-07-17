@@ -7,6 +7,7 @@ const sendForm = () => {
 	statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
 
 	forms.forEach(item => {
+		item.querySelector('.form-phone').setAttribute('maxlength', 15);
 		item.addEventListener('input', event => {
 			if (event.target.matches('.form-phone')) {
 				event.target.value = event.target.value.replace(/^[^+\d]*(\+|\d)|\D/g, '$1');
@@ -56,6 +57,7 @@ const sendForm = () => {
 		item.addEventListener('submit', event => {
 			event.preventDefault();
 			if (item.querySelector('.form-phone').value.length >= 11) {
+				item.querySelector('.form-phone').style.boxShadow = 'none';
 				item.appendChild(statusMessage);
 				createAnimationStyle();
 				statusMessage.textContent = '';
@@ -68,16 +70,24 @@ const sendForm = () => {
 					}
 					statusMessage.classList.remove('sk-rotating-plane');
 					statusMessage.textContent = successMessage;
+					setTimeout(() => {
+						statusMessage.textContent = '';
+					}, 4000);
 				}).catch(error => {
 					statusMessage.classList.remove('sk-rotating-plane');
 					statusMessage.textContent = errorMessage;
 					console.error(error);
+					setTimeout(() => {
+						statusMessage.textContent = '';
+					}, 4000);
 				});
 
 				const inputs = item.querySelectorAll('input');
 				inputs.forEach(item => {
 					item.value = '';
 				});
+			} else {
+				item.querySelector('.form-phone').style.boxShadow = 'inset 0 0 5px red';
 			}
 		});
 	});
